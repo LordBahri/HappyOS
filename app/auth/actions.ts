@@ -26,7 +26,7 @@ export async function signup(
     password: formData.get("password") as string,
   });
   if (error) return error.message;
-  redirect("/");
+  redirect("/auth/verify");
 }
 
 export async function logout() {
