@@ -21,7 +21,13 @@ export default async function ExpensesPage({
   if (!user) redirect("/auth/login");
 
   const familyId = await getFamilyId(supabase, user.id);
-  if (!familyId) redirect("/auth/login");
+  if (!familyId) {
+    return (
+      <p className="text-sm text-neutral-500">
+        No family found. Please sign out and sign up again to create one.
+      </p>
+    );
+  }
 
   const { month: rawMonth } = await searchParams;
   const month = rawMonth ?? currentMonth();
