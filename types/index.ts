@@ -26,6 +26,18 @@ export type Expense = {
   title: string;
   amount: number;
   category: string | null;
+  currency: string;
+  notes: string | null;
+  tags: string[];
+  is_recurring: boolean;
   date: string;
   created_at: string;
+};
+
+export type MonthSummary = {
+  total: number;
+  count: number;
+  recurringTotal: number;
+  byCategory: Record<string, number>;
+  byCurrency: Record<string, number>;
 };
