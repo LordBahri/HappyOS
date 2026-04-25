@@ -31,10 +31,11 @@ export default async function ExpensesPage({
     );
   }
 
+  const familyId = result.familyId;
   const { month: rawMonth } = await searchParams;
   const month = rawMonth ?? currentMonth();
 
-  const expenses = await getExpenses(supabase, result.familyId, month);
+  const expenses = await getExpenses(supabase, familyId, month);
 
   return (
     <div className="space-y-6">
