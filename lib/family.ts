@@ -21,23 +21,11 @@ export async function getOrCreateFamilyId(
   const existing = await getFamilyId(supabase, userId);
   if (existing) return { familyId: existing };
 
-  const { data: family, error: familyError } = await supabase
-    .from("families")
-    .insert({ name: "My Family" })
-    .select("id")
-    .single();
+  const { data, error } = await supabase.rpc("create_family_for_user");
 
-  if (familyError || !family) {
-    return { error: familyError?.message ?? "Failed to create family" };
+  if (error || !data) {
+    return { error: error?.message ?? "Failed to create family" };
   }
 
-  const { error: memberError } = await supabase
-    .from("family_members")
-    .insert({ family_id: family.id, user_id: userId, role: "owner" });
-
-  if (memberError) {
-    return { error: memberError.message };
-  }
-
-  return { familyId: family.id };
+  return { familyId: data as string };
 }
