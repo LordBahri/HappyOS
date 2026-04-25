@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { addExpense } from "@/app/(app)/expenses/actions";
+import { addExpense } from "@/app/actions/expenses";
 import { CATEGORIES } from "@/lib/expenses";
 
 export default function ExpenseForm() {
