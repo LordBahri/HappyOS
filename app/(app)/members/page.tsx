@@ -1,6 +1,7 @@
 import { getSessionContext } from "@/lib/session";
 import type { FamilyMember } from "@/types";
 import MemberList from "@/components/members/MemberList";
+import InviteForm from "@/components/members/InviteForm";
 
 export default async function MembersPage() {
   const ctx = await getSessionContext();
@@ -29,6 +30,7 @@ export default async function MembersPage() {
         </span>
       </div>
       <MemberList members={members} currentUserId={user.id} isAdmin={isAdmin} />
+      {isAdmin && <InviteForm />}
     </div>
   );
 }

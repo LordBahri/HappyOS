@@ -69,3 +69,26 @@ export async function removeMember(formData: FormData) {
 
   revalidatePath("/members");
 }
+
+type InviteState = { link?: string; error?: string } | null;
+
+export async function inviteMember(
+  _prev: InviteState,
+  formData: FormData
+): Promise<InviteState> {
+  const email = (formData.get("email") as string).trim().toLowerCase();
+
+  const ctx = await requireAdmin();
+  if ("error" in ctx) return { error: ctx.error };
+
+  const { data, error } = await ctx.supabase
+    .from("family_invites")
+    .insert({ family_id: ctx.familyId, invited_by: ctx.userId, email })
+    .select("token")
+    .single();
+
+  if (error || !data) return { error: error?.message ?? "Failed to create invite" };
+
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  return { link: `${base}/invite/${data.token}` };
+}

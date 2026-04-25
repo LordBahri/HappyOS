@@ -13,7 +13,8 @@ export async function login(
     password: formData.get("password") as string,
   });
   if (error) return error.message;
-  redirect("/");
+  const next = (formData.get("next") as string) || "/";
+  redirect(next);
 }
 
 export async function signup(
