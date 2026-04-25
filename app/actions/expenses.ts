@@ -12,10 +12,11 @@ export async function addExpense(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return "Not authenticated";
 
-  const familyId = await getOrCreateFamilyId(supabase, user.id);
+  const result = await getOrCreateFamilyId(supabase, user.id);
+  if (result.error) return result.error;
 
   const { error } = await supabase.from("expenses").insert({
-    family_id: familyId,
+    family_id: result.familyId,
     created_by: user.id,
     title: formData.get("title") as string,
     amount: parseFloat(formData.get("amount") as string),

@@ -12,12 +12,16 @@ export async function getFamilyId(
   return data?.family_id ?? null;
 }
 
+type FamilyResult =
+  | { familyId: string; error?: never }
+  | { familyId?: never; error: string };
+
 export async function getOrCreateFamilyId(
   supabase: SupabaseClient,
   userId: string
-): Promise<string> {
+): Promise<FamilyResult> {
   const existing = await getFamilyId(supabase, userId);
-  if (existing) return existing;
+  if (existing) return { familyId: existing };
 
   const { data: family, error: familyError } = await supabase
     .from("families")
@@ -25,11 +29,17 @@ export async function getOrCreateFamilyId(
     .select("id")
     .single();
 
-  if (familyError || !family) throw new Error(`Failed to create family: ${familyError?.message}`);
+  if (familyError || !family) {
+    return { error: familyError?.message ?? "Failed to create family" };
+  }
 
-  await supabase
+  const { error: memberError } = await supabase
     .from("family_members")
     .insert({ family_id: family.id, user_id: userId, role: "owner" });
 
-  return family.id;
+  if (memberError) {
+    return { error: memberError.message };
+  }
+
+  return { familyId: family.id };
 }

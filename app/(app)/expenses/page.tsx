@@ -6,7 +6,6 @@ import ExpenseForm from "@/components/expenses/ExpenseForm";
 import ExpenseList from "@/components/expenses/ExpenseList";
 import MonthFilter from "@/components/expenses/MonthFilter";
 
-
 function currentMonth() {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -21,12 +20,21 @@ export default async function ExpensesPage({
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  const familyId = await getOrCreateFamilyId(supabase, user.id);
+  const result = await getOrCreateFamilyId(supabase, user.id);
+
+  if (result.error) {
+    return (
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-red-500">Failed to load family</p>
+        <p className="text-xs text-neutral-400">{result.error}</p>
+      </div>
+    );
+  }
 
   const { month: rawMonth } = await searchParams;
   const month = rawMonth ?? currentMonth();
 
-  const expenses = await getExpenses(supabase, familyId, month);
+  const expenses = await getExpenses(supabase, result.familyId, month);
 
   return (
     <div className="space-y-6">
