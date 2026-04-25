@@ -9,9 +9,10 @@ export default async function ShoppingPage() {
 
   const { supabase, familyId } = ctx;
 
+  // ShoppingList uses: id, name, checked — created_at drives the sort order
   const { data } = await supabase
     .from("shopping_items")
-    .select("*")
+    .select("id,name,checked,created_at")
     .eq("family_id", familyId)
     .order("checked", { ascending: true })
     .order("created_at", { ascending: false });

@@ -39,12 +39,13 @@ function monthDateRange(month: string): { from: string; to: string } {
 export async function getExpenses(
   supabase: SupabaseClient,
   familyId: string,
-  month: string
+  month: string,
+  columns = "*"
 ): Promise<Expense[]> {
   const { from, to } = monthDateRange(month);
   const { data } = await supabase
     .from("expenses")
-    .select("*")
+    .select(columns)
     .eq("family_id", familyId)
     .gte("date", from)
     .lte("date", to)
@@ -86,13 +87,15 @@ export async function applyRecurringExpenses(
 ): Promise<number> {
   const { from } = monthDateRange(month);
 
-  // Latest instance per title across all time
+  // Latest instance per title — DESC order so first hit per title is newest.
+  // Limit caps the scan; 200 distinct recurring templates is far beyond realistic.
   const { data: all } = await supabase
     .from("expenses")
     .select("title, amount, category, currency, notes, tags")
     .eq("family_id", familyId)
     .eq("is_recurring", true)
-    .order("date", { ascending: false });
+    .order("date", { ascending: false })
+    .limit(200);
 
   if (!all?.length) return 0;
 

@@ -20,12 +20,15 @@ export default async function DashboardPage() {
   const month = currentMonth();
   const prevMonth = previousMonth(month);
 
+  // Columns: enough for getMonthSummary + RecentExpenses; skip notes/tags/updated_at
+  const EXPENSE_COLS = "id,title,amount,category,currency,is_recurring";
+
   const [expenses, prevExpenses, shoppingRes] = await Promise.all([
-    getExpenses(supabase, familyId, month),
-    getExpenses(supabase, familyId, prevMonth),
+    getExpenses(supabase, familyId, month, EXPENSE_COLS),
+    getExpenses(supabase, familyId, prevMonth, EXPENSE_COLS),
     supabase
       .from("shopping_items")
-      .select("*")
+      .select("id,name")
       .eq("family_id", familyId)
       .eq("checked", false)
       .order("created_at", { ascending: false })
