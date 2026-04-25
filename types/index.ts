@@ -9,7 +9,15 @@ export type Family = {
   name: string;
 };
 
-export type Expense = {
+export type ShoppingItem = {
+  id: string;
+  family_id: string;
+  created_by: string;
+  name: string;
+  quantity: number;
+  checked: boolean;
+  created_at: string;
+};
   id: string;
   family_id: string;
   created_by: string;
