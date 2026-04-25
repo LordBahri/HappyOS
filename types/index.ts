@@ -18,6 +18,8 @@ export type ShoppingItem = {
   checked: boolean;
   created_at: string;
 };
+
+export type Expense = {
   id: string;
   family_id: string;
   created_by: string;
