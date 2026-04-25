@@ -34,6 +34,22 @@ export type Expense = {
   created_at: string;
 };
 
+export type MemberPermissions = {
+  manage_members: boolean;
+  manage_expenses: boolean;
+  manage_shopping: boolean;
+};
+
+export type FamilyMember = {
+  id: string;
+  family_id: string;
+  user_id: string;
+  role: "admin" | "member";
+  permissions: MemberPermissions;
+  joined_at: string;
+  email: string;
+};
+
 export type MonthSummary = {
   total: number;
   count: number;
