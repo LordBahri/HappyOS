@@ -25,7 +25,7 @@ export async function getOrCreateFamilyId(
     .select("id")
     .single();
 
-  if (familyError || !family) throw new Error("Failed to create family");
+  if (familyError || !family) throw new Error(`Failed to create family: ${familyError?.message}`);
 
   await supabase
     .from("family_members")
