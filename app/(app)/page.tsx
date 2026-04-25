@@ -1,5 +1,11 @@
 import { getSessionContext } from "@/lib/session";
-import { getExpenses, currentMonth } from "@/lib/expenses";
+import {
+  getExpenses,
+  getMonthSummary,
+  currentMonth,
+  previousMonth,
+  percentChange,
+} from "@/lib/expenses";
 import type { ShoppingItem } from "@/types";
 import StatCard from "@/components/dashboard/StatCard";
 import CategoryBreakdown from "@/components/dashboard/CategoryBreakdown";
@@ -11,9 +17,12 @@ export default async function DashboardPage() {
   if ("error" in ctx) return <p className="text-sm text-red-500">{ctx.error}</p>;
 
   const { supabase, familyId } = ctx;
+  const month = currentMonth();
+  const prevMonth = previousMonth(month);
 
-  const [expenses, shoppingRes] = await Promise.all([
-    getExpenses(supabase, familyId, currentMonth()),
+  const [expenses, prevExpenses, shoppingRes] = await Promise.all([
+    getExpenses(supabase, familyId, month),
+    getExpenses(supabase, familyId, prevMonth),
     supabase
       .from("shopping_items")
       .select("*")
@@ -23,14 +32,9 @@ export default async function DashboardPage() {
       .limit(5),
   ]);
 
-  const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
-
-  const byCategory = expenses.reduce<Record<string, number>>((acc, e) => {
-    const cat = e.category ?? "Other";
-    acc[cat] = (acc[cat] ?? 0) + Number(e.amount);
-    return acc;
-  }, {});
-
+  const summary = getMonthSummary(expenses);
+  const prevSummary = getMonthSummary(prevExpenses);
+  const totalTrend = percentChange(summary.total, prevSummary.total);
   const shopping = (shoppingRes.data as ShoppingItem[]) ?? [];
 
   return (
@@ -38,14 +42,30 @@ export default async function DashboardPage() {
       <h1 className="text-2xl font-bold">Dashboard</h1>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <StatCard label="Month total" value={`$${total.toFixed(2)}`} />
-        <StatCard label="Transactions" value={String(expenses.length)} />
+        <StatCard
+          label="Month total"
+          value={`$${summary.total.toFixed(2)}`}
+          trend={totalTrend}
+          sub={
+            prevSummary.total > 0
+              ? `$${prevSummary.total.toFixed(2)} last mo`
+              : undefined
+          }
+        />
+        <StatCard label="Transactions" value={String(summary.count)} />
         <StatCard label="To buy" value={String(shopping.length)} />
-        <StatCard label="Categories" value={String(Object.keys(byCategory).length)} />
+        <StatCard
+          label="Recurring"
+          value={`$${summary.recurringTotal.toFixed(2)}`}
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <CategoryBreakdown byCategory={byCategory} total={total} />
+        <CategoryBreakdown
+          byCategory={summary.byCategory}
+          total={summary.total}
+          prevByCategory={prevSummary.byCategory}
+        />
         <RecentExpenses expenses={expenses.slice(0, 5)} />
       </div>
 

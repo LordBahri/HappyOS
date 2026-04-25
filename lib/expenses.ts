@@ -15,6 +15,17 @@ export function currentMonth(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
 
+export function previousMonth(month: string): string {
+  const [year, m] = month.split("-").map(Number);
+  const d = new Date(year, m - 2, 1); // m-2 handles year wrap correctly
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+export function percentChange(current: number, prev: number): number | null {
+  if (prev === 0) return null;
+  return ((current - prev) / prev) * 100;
+}
+
 function monthDateRange(month: string): { from: string; to: string } {
   const [year, m] = month.split("-").map(Number);
   const from = `${year}-${String(m).padStart(2, "0")}-01`;
