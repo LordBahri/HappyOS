@@ -56,7 +56,7 @@ export async function getExpenses(
 
 export function getCategoryTotals(expenses: Expense[]): Record<string, number> {
   return expenses.reduce<Record<string, number>>((acc, e) => {
-    const cat = e.category ?? "Other";
+    const cat = e.category ?? "Other"; // null guard for pre-migration rows
     acc[cat] = (acc[cat] ?? 0) + Number(e.amount);
     return acc;
   }, {});

@@ -7,6 +7,8 @@ export type User = {
 export type Family = {
   id: string;
   name: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type ShoppingItem = {
@@ -17,6 +19,7 @@ export type ShoppingItem = {
   quantity: number;
   checked: boolean;
   created_at: string;
+  updated_at: string;
 };
 
 export type Expense = {
@@ -32,6 +35,7 @@ export type Expense = {
   is_recurring: boolean;
   date: string;
   created_at: string;
+  updated_at: string;
 };
 
 export type MemberPermissions = {
@@ -47,6 +51,7 @@ export type FamilyMember = {
   role: "admin" | "member";
   permissions: MemberPermissions;
   joined_at: string;
+  updated_at: string;
   email: string;
 };
 
