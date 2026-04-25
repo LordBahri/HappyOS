@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getFamilyId } from "@/lib/family";
+import { getOrCreateFamilyId } from "@/lib/family";
 import { getExpenses } from "@/lib/expenses";
 import ExpenseForm from "@/components/expenses/ExpenseForm";
 import ExpenseList from "@/components/expenses/ExpenseList";
@@ -21,14 +21,7 @@ export default async function ExpensesPage({
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  const familyId = await getFamilyId(supabase, user.id);
-  if (!familyId) {
-    return (
-      <p className="text-sm text-neutral-500">
-        No family found. Please sign out and sign up again to create one.
-      </p>
-    );
-  }
+  const familyId = await getOrCreateFamilyId(supabase, user.id);
 
   const { month: rawMonth } = await searchParams;
   const month = rawMonth ?? currentMonth();

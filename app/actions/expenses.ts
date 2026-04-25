@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { getFamilyId } from "@/lib/family";
+import { getOrCreateFamilyId } from "@/lib/family";
 import { revalidatePath } from "next/cache";
 
 export async function addExpense(
@@ -12,8 +12,7 @@ export async function addExpense(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return "Not authenticated";
 
-  const familyId = await getFamilyId(supabase, user.id);
-  if (!familyId) return "No family found";
+  const familyId = await getOrCreateFamilyId(supabase, user.id);
 
   const { error } = await supabase.from("expenses").insert({
     family_id: familyId,
