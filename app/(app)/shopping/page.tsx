@@ -1,24 +1,18 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { getOrCreateFamilyId } from "@/lib/family";
+import { getSessionContext } from "@/lib/session";
 import type { ShoppingItem } from "@/types";
 import AddItemForm from "@/components/shopping/AddItemForm";
 import ShoppingList from "@/components/shopping/ShoppingList";
 
 export default async function ShoppingPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
+  const ctx = await getSessionContext();
+  if ("error" in ctx) return <p className="text-sm text-red-500">{ctx.error}</p>;
 
-  const result = await getOrCreateFamilyId(supabase, user.id);
-  if ("error" in result) {
-    return <p className="text-sm text-red-500">{result.error}</p>;
-  }
+  const { supabase, familyId } = ctx;
 
   const { data } = await supabase
     .from("shopping_items")
     .select("*")
-    .eq("family_id", result.familyId)
+    .eq("family_id", familyId)
     .order("checked", { ascending: true })
     .order("created_at", { ascending: false });
 
