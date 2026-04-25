@@ -12,9 +12,7 @@ export async function getFamilyId(
   return data?.family_id ?? null;
 }
 
-type FamilyResult =
-  | { familyId: string; error?: never }
-  | { familyId?: never; error: string };
+type FamilyResult = { familyId: string } | { error: string };
 
 export async function getOrCreateFamilyId(
   supabase: SupabaseClient,
