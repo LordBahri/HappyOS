@@ -23,7 +23,7 @@ export default async function ExpensesPage({
   if (!user) redirect("/auth/login");
 
   const result = await getOrCreateFamilyId(supabase, user.id);
-  if (result.error) {
+  if ("error" in result) {
     return (
       <div className="space-y-1">
         <p className="text-sm font-medium text-red-500">Failed to load family</p>
