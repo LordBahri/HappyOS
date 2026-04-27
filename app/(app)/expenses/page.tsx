@@ -1,40 +1,21 @@
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { getOrCreateFamilyId } from "@/lib/family";
-import { getExpenses } from "@/lib/expenses";
+import { getSessionContext } from "@/lib/session";
+import { getExpenses, currentMonth } from "@/lib/expenses";
 import ExpenseForm from "@/components/expenses/ExpenseForm";
 import ExpenseList from "@/components/expenses/ExpenseList";
 import MonthFilter from "@/components/expenses/MonthFilter";
-
-function currentMonth() {
-  const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
-}
 
 export default async function ExpensesPage({
   searchParams,
 }: {
   searchParams: Promise<{ month?: string }>;
 }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
+  const ctx = await getSessionContext();
+  if ("error" in ctx) return <p className="text-sm text-red-500">{ctx.error}</p>;
 
-  const result = await getOrCreateFamilyId(supabase, user.id);
-
-  if (result.error) {
-    return (
-      <div className="space-y-1">
-        <p className="text-sm font-medium text-red-500">Failed to load family</p>
-        <p className="text-xs text-neutral-400">{result.error}</p>
-      </div>
-    );
-  }
-
+  const { supabase, familyId } = ctx;
   const { month: rawMonth } = await searchParams;
   const month = rawMonth ?? currentMonth();
-
-  const expenses = await getExpenses(supabase, result.familyId, month);
+  const expenses = await getExpenses(supabase, familyId, month);
 
   return (
     <div className="space-y-6">

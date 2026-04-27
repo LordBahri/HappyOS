@@ -13,7 +13,7 @@ export async function addExpense(
   if (!user) return "Not authenticated";
 
   const result = await getOrCreateFamilyId(supabase, user.id);
-  if (result.error) return result.error;
+  if ("error" in result) return result.error;
 
   const { error } = await supabase.from("expenses").insert({
     family_id: result.familyId,
