@@ -49,17 +49,39 @@ export default async function DashboardPage() {
           label="Month total"
           value={`$${summary.total.toFixed(2)}`}
           trend={totalTrend}
-          sub={
-            prevSummary.total > 0
-              ? `$${prevSummary.total.toFixed(2)} last mo`
-              : undefined
+          sub={prevSummary.total > 0 ? `$${prevSummary.total.toFixed(2)} last mo` : undefined}
+          icon={
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+            </svg>
           }
         />
-        <StatCard label="Transactions" value={String(summary.count)} />
-        <StatCard label="To buy" value={String(shopping.length)} />
+        <StatCard
+          label="Transactions"
+          value={String(summary.count)}
+          icon={
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          }
+        />
+        <StatCard
+          label="To buy"
+          value={String(shopping.length)}
+          icon={
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><path d="M3 6h18" />
+            </svg>
+          }
+        />
         <StatCard
           label="Recurring"
           value={`$${summary.recurringTotal.toFixed(2)}`}
+          icon={
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
+              <path d="M23 4v6h-6M1 20v-6h6" /><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+            </svg>
+          }
         />
       </div>
 
