@@ -1,21 +1,26 @@
 import type { Expense } from "@/types";
 import { getCategoryTotals } from "@/lib/expenses";
 
-interface StatCardProps {
-  label: string;
-  value: string;
-  sub?: string;
-  accent: string;
+export interface StatsCardProps {
   icon: React.ReactNode;
+  value: string;
+  label: string;
+  /** Tailwind bg + text classes for the icon container, e.g. "bg-indigo-100 text-indigo-600" */
+  accent: string;
+  sub?: string;
 }
 
-function StatCard({ label, value, sub, accent, icon }: StatCardProps) {
+export function StatsCard({ icon, value, label, accent, sub }: StatsCardProps) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-      <div className={`mb-3 inline-flex rounded-xl p-2.5 ${accent}`}>{icon}</div>
-      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-gray-900">{value}</p>
-      {sub && <p className="mt-0.5 text-xs text-gray-400">{sub}</p>}
+    <div className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${accent}`}>
+        {icon}
+      </div>
+      <div className="min-w-0">
+        <p className="text-2xl font-bold tabular-nums text-gray-900 leading-tight">{value}</p>
+        <p className="mt-0.5 text-xs font-medium text-gray-500">{label}</p>
+        {sub && <p className="mt-0.5 text-xs text-gray-400">{sub}</p>}
+      </div>
     </div>
   );
 }
@@ -43,7 +48,7 @@ export default function StatsCards({
 
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-      <StatCard
+      <StatsCard
         label="Total This Month"
         value={`$${total.toFixed(2)}`}
         sub={`${expenses.length} transaction${expenses.length !== 1 ? "s" : ""}`}
@@ -54,7 +59,7 @@ export default function StatsCards({
           </svg>
         }
       />
-      <StatCard
+      <StatsCard
         label="Daily Average"
         value={`$${dailyAvg.toFixed(2)}`}
         sub={`Over ${daysInMonth} days`}
@@ -65,7 +70,7 @@ export default function StatsCards({
           </svg>
         }
       />
-      <StatCard
+      <StatsCard
         label="Biggest Expense"
         value={biggest > 0 ? `$${biggest.toFixed(2)}` : "—"}
         sub={recurringTotal > 0 ? `$${recurringTotal.toFixed(2)} recurring` : undefined}
@@ -76,7 +81,7 @@ export default function StatsCards({
           </svg>
         }
       />
-      <StatCard
+      <StatsCard
         label="Top Category"
         value={topCat}
         accent="bg-violet-100 text-violet-600"
