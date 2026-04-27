@@ -36,6 +36,8 @@ export type Expense = {
   date: string;
   created_at: string;
   updated_at: string;
+  member?: string | null;
+  payment_method?: string | null;
 };
 
 export type MemberPermissions = {
