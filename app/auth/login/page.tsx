@@ -18,20 +18,20 @@ function LoginForm() {
         type="email"
         placeholder="Email"
         required
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500"
+        className="w-full rounded-xl border border-line bg-surface-raised px-4 py-2.5 text-sm outline-none transition focus:border-primary-400 focus:bg-surface focus:ring-2 focus:ring-interactive-ring"
       />
       <input
         name="password"
         type="password"
         placeholder="Password"
         required
-        className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-neutral-500"
+        className="w-full rounded-xl border border-line bg-surface-raised px-4 py-2.5 text-sm outline-none transition focus:border-primary-400 focus:bg-surface focus:ring-2 focus:ring-interactive-ring"
       />
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-danger">{error}</p>}
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-700 disabled:opacity-50"
+        className="w-full rounded-xl bg-interactive px-4 py-2.5 text-sm font-medium text-fg-inverse transition hover:bg-interactive-hover disabled:opacity-50"
       >
         {pending ? "Signing in…" : "Sign in"}
       </button>
@@ -41,15 +41,15 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="w-full max-w-sm space-y-6">
-        <h1 className="text-2xl font-bold">Sign in</h1>
+        <h1 className="text-2xl font-bold text-fg">Sign in</h1>
         <Suspense>
           <LoginForm />
         </Suspense>
-        <p className="text-center text-sm text-neutral-500">
+        <p className="text-center text-sm text-fg-muted">
           No account?{" "}
-          <Link href="/auth/signup" className="underline">
+          <Link href="/auth/signup" className="text-interactive underline hover:text-interactive-hover">
             Sign up
           </Link>
         </p>

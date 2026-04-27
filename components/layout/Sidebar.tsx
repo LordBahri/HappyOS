@@ -63,15 +63,15 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex w-60 flex-col bg-slate-900 h-full flex-shrink-0">
+    <aside className="hidden md:flex w-60 flex-col bg-accent-800 h-full flex-shrink-0">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-5 py-6">
-        <div className="h-8 w-8 rounded-xl bg-indigo-600 flex items-center justify-center flex-shrink-0">
-          <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+        <div className="h-8 w-8 rounded-xl bg-interactive flex items-center justify-center flex-shrink-0">
+          <svg className="h-4 w-4 text-fg-inverse" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" fill="none"/>
           </svg>
         </div>
-        <span className="text-base font-bold text-white tracking-tight">HappyOS</span>
+        <span className="text-base font-bold text-fg-inverse tracking-tight">HappyOS</span>
       </div>
 
       {/* Nav */}
@@ -84,8 +84,8 @@ export default function Sidebar() {
               href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
                 active
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-interactive text-fg-inverse shadow-sm"
+                  : "text-fg-subtle hover:text-fg-inverse hover:bg-accent-700"
               }`}
             >
               <span className="h-[18px] w-[18px] flex-shrink-0">{icon}</span>
@@ -96,8 +96,8 @@ export default function Sidebar() {
       </nav>
 
       {/* Bottom separator */}
-      <div className="px-3 py-3 border-t border-slate-800">
-        <p className="px-3 text-xs text-slate-600">v0.1</p>
+      <div className="px-3 py-3 border-t border-accent-700">
+        <p className="px-3 text-xs text-accent-500">v0.1</p>
       </div>
     </aside>
   );

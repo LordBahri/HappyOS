@@ -2,8 +2,8 @@ import { changeRole, removeMember } from "@/app/actions/members";
 import type { FamilyMember } from "@/types";
 
 const ROLE_BADGE: Record<string, string> = {
-  admin:  "bg-indigo-50  text-indigo-700",
-  member: "bg-gray-100   text-gray-500",
+  admin:  "bg-primary-50 text-primary-700",
+  member: "bg-neutral-100 text-fg-muted",
 };
 
 function initials(email: string) {
@@ -22,20 +22,20 @@ export default function MemberCard({
   const isSelf = member.user_id === currentUserId;
 
   return (
-    <div className="flex flex-col items-center gap-3 rounded-2xl border border-gray-100 bg-white p-5 text-center shadow-sm transition hover:shadow-md">
+    <div className="flex flex-col items-center gap-3 rounded-2xl border border-line bg-surface p-5 text-center shadow-sm transition hover:shadow-md">
       {/* Avatar */}
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-100 text-lg font-bold text-indigo-700">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary-100 text-lg font-bold text-primary-700">
         {initials(member.email)}
       </div>
 
       {/* Identity */}
       <div className="w-full space-y-1.5">
         <div className="flex items-center justify-center gap-1.5">
-          <p className="max-w-[160px] truncate text-sm font-medium text-gray-900">
+          <p className="max-w-[160px] truncate text-sm font-medium text-fg">
             {member.email}
           </p>
           {isSelf && (
-            <span className="shrink-0 rounded-full bg-gray-100 px-1.5 py-px text-xs text-gray-400">
+            <span className="shrink-0 rounded-full bg-neutral-100 px-1.5 py-px text-xs text-fg-subtle">
               you
             </span>
           )}
@@ -47,20 +47,20 @@ export default function MemberCard({
 
       {/* Admin actions — hidden for self */}
       {isAdmin && !isSelf && (
-        <div className="w-full space-y-1.5 border-t border-gray-100 pt-3">
+        <div className="w-full space-y-1.5 border-t border-line pt-3">
           <form action={changeRole} className="flex gap-1.5">
             <input type="hidden" name="memberId" value={member.id} />
             <select
               name="role"
               defaultValue={member.role}
-              className="flex-1 rounded-xl border border-gray-200 bg-gray-50 px-2.5 py-1.5 text-xs outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition"
+              className="flex-1 rounded-xl border border-line bg-surface-raised px-2.5 py-1.5 text-xs outline-none focus:border-primary-400 focus:ring-2 focus:ring-interactive-ring transition"
             >
               <option value="admin">Admin</option>
               <option value="member">Member</option>
             </select>
             <button
               type="submit"
-              className="rounded-xl border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 transition hover:bg-gray-50"
+              className="rounded-xl border border-line bg-surface px-3 py-1.5 text-xs font-medium text-fg-muted transition hover:bg-surface-raised"
             >
               Save
             </button>
@@ -70,7 +70,7 @@ export default function MemberCard({
             <input type="hidden" name="memberId" value={member.id} />
             <button
               type="submit"
-              className="w-full rounded-xl py-1.5 text-xs font-medium text-red-400 transition hover:bg-red-50 hover:text-red-600"
+              className="w-full rounded-xl py-1.5 text-xs font-medium text-danger/70 transition hover:bg-danger/5 hover:text-danger"
             >
               Remove
             </button>

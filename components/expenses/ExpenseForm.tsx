@@ -5,9 +5,9 @@ import { addExpense } from "@/app/actions/expenses";
 import { CATEGORIES, PAYMENT_METHODS, CURRENCIES } from "@/lib/expenses";
 
 const INPUT =
-  "w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100";
+  "w-full rounded-xl border border-line bg-surface-raised px-4 py-2.5 text-sm outline-none transition focus:border-primary-400 focus:bg-surface focus:ring-2 focus:ring-interactive-ring";
 
-const LABEL = "mb-1 block text-xs font-medium text-gray-600";
+const LABEL = "mb-1 block text-xs font-medium text-fg-muted";
 
 export default function ExpenseForm() {
   const [error, action, pending] = useActionState(addExpense, null);
@@ -113,20 +113,20 @@ export default function ExpenseForm() {
 
       {/* Recurring + Submit */}
       <div className="flex items-center justify-between">
-        <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600 select-none">
+        <label className="flex cursor-pointer items-center gap-2 text-sm text-fg-muted select-none">
           <input
             name="is_recurring"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 accent-indigo-600"
+            className="h-4 w-4 rounded border-line accent-interactive"
           />
           Recurring expense
         </label>
         <div className="flex items-center gap-3">
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p className="text-sm text-danger">{error}</p>}
           <button
             type="submit"
             disabled={pending}
-            className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50"
+            className="rounded-xl bg-interactive px-6 py-2.5 text-sm font-medium text-fg-inverse transition hover:bg-interactive-hover active:bg-interactive-active disabled:opacity-50"
           >
             {pending ? "Adding…" : "Add Expense"}
           </button>

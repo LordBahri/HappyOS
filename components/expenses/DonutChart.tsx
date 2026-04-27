@@ -102,7 +102,7 @@ export default function DonutChart({ expenses }: { expenses: Expense[] }) {
               cy={cy}
               r={(outerR + innerR) / 2}
               fill="none"
-              stroke="#e5e7eb"
+              stroke="#e2e8f0"
               strokeWidth={outerR - innerR}
             />
           ) : (
@@ -112,21 +112,21 @@ export default function DonutChart({ expenses }: { expenses: Expense[] }) {
           )}
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          <span className="text-lg font-bold text-gray-900">${total.toFixed(0)}</span>
-          <span className="text-xs text-gray-400">total</span>
+          <span className="text-lg font-bold text-fg">${total.toFixed(0)}</span>
+          <span className="text-xs text-fg-subtle">total</span>
         </div>
       </div>
 
       <div className="flex flex-1 flex-col gap-2">
         {slices.length === 0 ? (
-          <p className="text-sm text-gray-400">No data yet</p>
+          <p className="text-sm text-fg-subtle">No data yet</p>
         ) : (
           slices.map((s) => (
             <div key={s.category} className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: s.color }} />
-              <span className="flex-1 truncate text-sm text-gray-600">{s.category}</span>
-              <span className="text-sm font-semibold text-gray-900">${s.amount.toFixed(0)}</span>
-              <span className="w-10 text-right text-xs text-gray-400">{s.percentage.toFixed(0)}%</span>
+              <span className="flex-1 truncate text-sm text-fg-muted">{s.category}</span>
+              <span className="text-sm font-semibold text-fg">${s.amount.toFixed(0)}</span>
+              <span className="w-10 text-right text-xs text-fg-subtle">{s.percentage.toFixed(0)}%</span>
             </div>
           ))
         )}
