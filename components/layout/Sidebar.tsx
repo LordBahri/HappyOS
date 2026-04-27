@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "@/components/ui/Logo";
 
 const NAV = [
   {
@@ -65,13 +66,8 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:flex w-60 flex-col bg-accent-800 h-full flex-shrink-0">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 py-6">
-        <div className="h-8 w-8 rounded-xl bg-interactive flex items-center justify-center flex-shrink-0">
-          <svg className="h-4 w-4 text-fg-inverse" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          </svg>
-        </div>
-        <span className="text-base font-bold text-fg-inverse tracking-tight">HappyOS</span>
+      <div className="flex items-center px-5 py-6">
+        <Logo size={28} light />
       </div>
 
       {/* Nav */}
