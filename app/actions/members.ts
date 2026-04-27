@@ -103,7 +103,7 @@ export async function updateFamilyInfo(
   if (!name) return "Family name is required";
 
   const ctx = await requireAdmin();
-  if ("error" in ctx) return ctx.error;
+  if ("error" in ctx) return ctx.error ?? null;
 
   const { error } = await ctx.supabase
     .from("families")
