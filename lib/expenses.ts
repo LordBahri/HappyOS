@@ -50,7 +50,7 @@ export async function getExpenses(
     .gte("date", from)
     .lte("date", to)
     .order("date", { ascending: false });
-  return (data as Expense[]) ?? [];
+  return (data as unknown as Expense[]) ?? [];
 }
 
 // ── Pure aggregations ─────────────────────────────────────────────────────────
