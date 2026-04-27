@@ -18,4 +18,8 @@ export type Expense = {
   category: string | null;
   date: string;
   created_at: string;
+  member?: string | null;
+  payment_method?: string | null;
+  tags?: string | null;
+  notes?: string | null;
 };

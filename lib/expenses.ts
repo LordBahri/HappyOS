@@ -10,6 +10,25 @@ export const CATEGORIES = [
   "Other",
 ] as const;
 
+export type Category = (typeof CATEGORIES)[number];
+
+export const PAYMENT_METHODS = [
+  "Cash",
+  "Credit Card",
+  "Debit Card",
+  "Bank Transfer",
+  "Other",
+] as const;
+
+export const CATEGORY_COLORS: Record<string, { bg: string; text: string; hex: string }> = {
+  Food:          { bg: "bg-orange-100",  text: "text-orange-700",  hex: "#f97316" },
+  Transport:     { bg: "bg-blue-100",    text: "text-blue-700",    hex: "#3b82f6" },
+  Utilities:     { bg: "bg-yellow-100",  text: "text-yellow-700",  hex: "#eab308" },
+  Entertainment: { bg: "bg-violet-100",  text: "text-violet-700",  hex: "#8b5cf6" },
+  Health:        { bg: "bg-emerald-100", text: "text-emerald-700", hex: "#10b981" },
+  Other:         { bg: "bg-gray-100",    text: "text-gray-500",    hex: "#6b7280" },
+};
+
 export async function getExpenses(
   supabase: SupabaseClient,
   familyId: string,
