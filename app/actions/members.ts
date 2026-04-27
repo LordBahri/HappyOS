@@ -44,7 +44,7 @@ export async function changeRole(formData: FormData) {
     .eq("id", memberId)
     .eq("family_id", ctx.familyId);
 
-  revalidatePath("/members");
+  revalidatePath("/family");
 }
 
 export async function removeMember(formData: FormData) {
@@ -67,7 +67,7 @@ export async function removeMember(formData: FormData) {
     .eq("id", memberId)
     .eq("family_id", ctx.familyId);
 
-  revalidatePath("/members");
+  revalidatePath("/family");
 }
 
 type InviteState = { link?: string; error?: string } | null;
@@ -91,4 +91,26 @@ export async function inviteMember(
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   return { link: `${base}/invite/${data.token}` };
+}
+
+export async function updateFamilyInfo(
+  _prev: string | null,
+  formData: FormData
+): Promise<string | null> {
+  const name = (formData.get("name") as string).trim();
+  const address = (formData.get("address") as string).trim() || null;
+
+  if (!name) return "Family name is required";
+
+  const ctx = await requireAdmin();
+  if ("error" in ctx) return ctx.error;
+
+  const { error } = await ctx.supabase
+    .from("families")
+    .update({ name, address })
+    .eq("id", ctx.familyId);
+
+  if (error) return error.message;
+  revalidatePath("/family");
+  return null;
 }

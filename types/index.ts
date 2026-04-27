@@ -7,6 +7,7 @@ export type User = {
 export type Family = {
   id: string;
   name: string;
+  address?: string | null;
   created_at: string;
   updated_at: string;
 };

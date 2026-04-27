@@ -1,4 +1,17 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Family } from "@/types";
+
+export async function getFamily(
+  supabase: SupabaseClient,
+  familyId: string
+): Promise<Family | null> {
+  const { data } = await supabase
+    .from("families")
+    .select("*")
+    .eq("id", familyId)
+    .single();
+  return (data as Family) ?? null;
+}
 
 export async function getFamilyId(
   supabase: SupabaseClient,
